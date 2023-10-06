@@ -5,10 +5,17 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	tk "craftin/pkg/tokens"
 )
 
 func run(msg string) {
-	fmt.Println(msg)
+	scanner := tk.NewScanner(msg)
+	scanner.ScanTokens()
+
+	for i, token := range scanner.Tokens() {
+		fmt.Printf("%d: %+v\n", i, token)
+	}
 }
 
 func runPrompt() {
@@ -44,6 +51,8 @@ func main() {
 		os.Exit(1)
 	} else if len(os.Args) == 2 {
 		runFile(os.Args[1])
+		token := "uber"
+		fmt.Printf("%s\n", token[0:1])
 	} else {
 		runPrompt()
 	}
