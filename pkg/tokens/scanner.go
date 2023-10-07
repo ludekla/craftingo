@@ -2,6 +2,7 @@ package tokens
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 )
 
@@ -27,13 +28,13 @@ type Scanner struct {
 }
 
 func NewScanner(src string) Scanner {
-	return Scanner{source: src}
+	return Scanner{source: src, line: 1}
 }
 
 func (s *Scanner) addToken(tokenType int) {
 	text := s.source[s.start:s.current]
 	fmt.Println(s.start, s.current, text)
-	s.tokens = append(s.tokens, NewToken(tokenType, text, s.line))
+	s.tokens = append(s.tokens, NewToken(tokenType, text, 0.0, s.line))
 }
 
 func (s *Scanner) advance() byte {
@@ -46,7 +47,7 @@ func (s *Scanner) ScanTokens() {
 		s.start = s.current
 		s.scanToken()
 	}
-	s.tokens = append(s.tokens, NewToken(EOF, "", s.line))
+	s.tokens = append(s.tokens, NewToken(EOF, "", 0.0, s.line))
 }
 
 func (s *Scanner) scanToken() {
@@ -112,6 +113,8 @@ func (s *Scanner) scanToken() {
 			s.number()
 		} else if isAlpha(c) {
 			s.identifier()
+		} else {
+			log.Fatalf("unexpected character in line %d: %v", s.line, c)
 		}
 	}
 }
@@ -163,8 +166,7 @@ func (s *Scanner) number() {
 		}
 	}
 	value, _ := strconv.ParseFloat(s.source[s.start:s.current], 64)
-	val := fmt.Sprintf("%v", value)
-	s.tokens = append(s.tokens, NewToken(NUMBER, val, s.line))
+	s.tokens = append(s.tokens, NewToken(NUMBER, "", value, s.line))
 }
 
 func (s *Scanner) identifier() {
@@ -187,9 +189,9 @@ func (s *Scanner) string() {
 		s.advance()
 	}
 	if s.EOF() {
-		return
+		log.Fatalf("unterminated string in line %d", s.line)
 	}
 	s.advance()
-	value := s.source[s.start+1 : s.current-1]
-	s.tokens = append(s.tokens, NewToken(STRING, value, s.line))
+	text := s.source[s.start+1 : s.current-1]
+	s.tokens = append(s.tokens, NewToken(STRING, text, 0.0, s.line))
 }

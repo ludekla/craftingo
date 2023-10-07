@@ -67,9 +67,10 @@ var keywords = map[string]int{
 type Token struct {
 	TokenType int
 	Lexeme    string
+	Value     float64
 	Line      int
 }
 
-func NewToken(tokenType int, lexeme string, line int) Token {
-	return Token{tokenType, lexeme, line}
+func NewToken(tokenType int, lexeme string, value float64, line int) Token {
+	return Token{tokenType, lexeme, value, line}
 }
