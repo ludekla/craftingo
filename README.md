@@ -1,4 +1,4 @@
-## CRAFTIN
+## Crafting an Interpreter in Go for Lox
 
 # Description
 
