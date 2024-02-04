@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	tk "craftin/pkg/tokens"
+	tk "golox/pkg/tokens"
 )
 
 func run(msg string) {

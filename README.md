@@ -7,7 +7,7 @@ This repo translates the Java code of the first part of the book
 *Robert Nystrom: Crafting Interpreters (2021)*
 
 into Go. It is the source code of an interpreter with GC for a 
-model language called *Lua*.
+model language called *Lox*.
 
 # Usage
 
