@@ -156,7 +156,6 @@ func (s *Scanner) peekNext() byte {
 func (s *Scanner) number() {
 	for isDigit(s.peek()) {
 		s.advance()
-		s.advance()
 	}
 	if s.peek() == '.' && isDigit(s.peekNext()) {
 		// first get over the dot
