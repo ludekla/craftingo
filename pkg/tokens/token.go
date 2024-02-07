@@ -2,7 +2,7 @@ package tokens
 
 const (
 	// single-character tokens
-	LEFT_PAREN = iota
+	LEFT_PAREN = iota               // -5
 	RIGHT_PAREN
 	LEFT_BRACE
 	RIGHT_BRACE
@@ -12,9 +12,9 @@ const (
 	PLUS
 	SEMICOLON
 	SLASH
-	STAR
+	STAR                            
 	// one or two-character tokens
-	BANG
+	BANG                             // -6
 	BANG_EQUAL
 	EQUAL
 	EQUAL_EQUAL
@@ -22,12 +22,12 @@ const (
 	GREATER_EQUAL
 	LESS
 	LESS_EQUAL
-	// literals
+	// literals                       // -7
 	IDENTIFIER
 	STRING
 	NUMBER
 	// keywords
-	AND
+	AND                               // -8
 	CLASS
 	ELSE
 	FALSE

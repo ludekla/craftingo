@@ -104,8 +104,6 @@ func (s *Scanner) scanToken() {
 			s.addToken(SLASH)
 		}
 	case ' ', '\t', '\r':
-	case '\n':
-		s.line++
 	case '"':
 		s.string()
 	default:

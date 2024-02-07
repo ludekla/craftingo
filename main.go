@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	tk "golox/pkg/tokens"
+	tk "glox/pkg/tokens"
 )
 
 func run(msg string) {
@@ -51,10 +51,7 @@ func main() {
 		os.Exit(1)
 	} else if len(os.Args) == 2 {
 		runFile(os.Args[1])
-		token := "uber"
-		fmt.Printf("%s\n", token[0:1])
 	} else {
 		runPrompt()
 	}
-
 }
