@@ -3,7 +3,7 @@ package grammar
 import tk "glox/pkg/tokens"
 
 type Expr interface {
-	Any
+	any
 }
 
 type Binary struct {
@@ -17,7 +17,7 @@ type Grouping struct {
 }
 
 type Literal struct {
-	value Any
+	value any
 }
 
 type Unary struct {

@@ -3,7 +3,7 @@ import os
 structs = [
     'Binary: left Expr, operator tk.Token, right Expr',
     'Grouping: expression Expr',
-    'Literal: value Any',
+    'Literal: value any',
     'Unary: operator tk.Token, expression Expr'
 ]
 
@@ -12,7 +12,7 @@ top_section = '''package grammar
 import tk "glox/pkg/tokens"
 
 type Expr interface {
-    Any
+    any
 }'''
 
 def setup_struct(expr: str):
