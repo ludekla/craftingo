@@ -1,6 +1,8 @@
 package grammar
 
-import tk "glox/pkg/tokens"
+import (
+	tk "glox/pkg/tokens"
+)
 
 type ReturnType interface{ string | float64 | int }
 
@@ -9,22 +11,38 @@ type Expr[R ReturnType] interface {
 }
 
 type Binary[R ReturnType] struct {
-	left     Expr[R]
-	operator tk.Token
-	right    Expr[R]
+	Left     Expr[R]
+	Operator tk.Token
+	Right    Expr[R]
 }
 
 type Grouping[R ReturnType] struct {
-	expression Expr[R]
+	Expression Expr[R]
 }
 
 type Literal[R ReturnType] struct {
-	value Expr[R]
+	Value any
 }
 
 type Unary[R ReturnType] struct {
-	operator   tk.Token
-	expression Expr[R]
+	Operator   tk.Token
+	Expression Expr[R]
+}
+
+func NewBinary[R ReturnType](left Expr[R], operator tk.Token, right Expr[R]) Binary[R] {
+	return Binary[R]{left, operator, right}
+}
+
+func NewGrouping[R ReturnType](expression Expr[R]) Grouping[R] {
+	return Grouping[R]{expression}
+}
+
+func NewLiteral[R ReturnType](value any) Literal[R] {
+	return Literal[R]{value}
+}
+
+func NewUnary[R ReturnType](operator tk.Token, expression Expr[R]) Unary[R] {
+	return Unary[R]{operator, expression}
 }
 
 type Visitor[R ReturnType] interface {

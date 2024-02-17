@@ -2,15 +2,17 @@ import os
 from typing import List
 
 structs = [
-    'Binary[R ReturnType]: left Expr[R], operator tk.Token, right Expr[R]',
-    'Grouping[R ReturnType]: expression Expr[R]',
-    'Literal[R ReturnType]: value Expr[R]',
-    'Unary[R ReturnType]: operator tk.Token, expression Expr[R]'
+    'Binary[R ReturnType]: Left Expr[R], Operator tk.Token, Right Expr[R]',
+    'Grouping[R ReturnType]: Expression Expr[R]',
+    'Literal[R ReturnType]: Value any',
+    'Unary[R ReturnType]: Operator tk.Token, Expression Expr[R]'
 ]
 
 top_section = '''package grammar
 
-import tk "glox/pkg/tokens"
+import (
+    tk "glox/pkg/tokens"
+)
 
 type ReturnType interface { string | float64 | int }'''
 
@@ -30,6 +32,23 @@ def setup_struct(expr: str):
     bottom = '}'
     return '\n'.join([top, body, bottom])
 
+def setup_new(expr: str):
+    clsname, struct_signature = expr.split(': ')
+    pieces = []
+    signature = []
+    for piece in struct_signature.split(', '):
+        obj, typ = piece.split()
+        obj = obj.lower()
+        pieces.append(obj)
+        signature.append(f'{obj} {typ}')
+    signature = ', '.join(signature)
+    top = f'func New{clsname}({signature}) '
+    clsname = clsname.replace('R ReturnType', 'R')
+    top += f'{clsname}' + '{'
+    body = f'    return {clsname}' + '{' + ', '.join(pieces) + '}'
+    bottom = '}'
+    return '\n'.join([top, body, bottom])
+
 def setup_visitor(exprs: List[str]):
     parts = ['type Visitor[R ReturnType] interface {']
     for expr in exprs:
@@ -41,7 +60,7 @@ def setup_visitor(exprs: List[str]):
     parts.append('}')
     return '\n'.join(parts)
 
-def implement_visitor(exprs: List[str]):
+def implement_accept(exprs: List[str]):
     parts = []
     for expr in exprs:
         clsname, *_ = expr.split(':')
@@ -64,9 +83,12 @@ def write():
         for struct in structs:
             struct_str = setup_struct(struct)
             fout.write(struct_str + '\n\n')
+        for struct in structs:
+            new_str = setup_new(struct)
+            fout.write(new_str + '\n\n')
         visitor = setup_visitor(structs)
         fout.write(visitor + '\n\n')
-        impls = implement_visitor(structs)
+        impls = implement_accept(structs)
         fout.write(impls)
 
 
